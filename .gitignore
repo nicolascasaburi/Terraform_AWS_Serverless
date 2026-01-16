@@ -1,0 +1,16 @@
+**/.terraform/*
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/crash.*.log
+**/backend.hcl
+**/*.tfvars
+**/*.tfvars.json
+**/build/
+**/dist/
+**/*.zip
+.vscode/
+__pycache__/
+*.pyc
+.venv/
+.env
