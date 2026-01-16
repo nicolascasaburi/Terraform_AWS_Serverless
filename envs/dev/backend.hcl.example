@@ -1,0 +1,12 @@
+#############################################
+# Author: Casaburi, Nicolás Esteban
+# Dev Environment backend template
+#############################################
+
+# Copy this file to backend.hcl and replace the values.
+
+bucket       = "REPLACE_WITH_TFSTATE_BUCKET_NAME"
+key          = "state/dev/infra.tfstate"
+region       = "us-east-2"
+encrypt      = true
+use_lockfile = true
