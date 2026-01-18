@@ -12,6 +12,6 @@ resource "random_id" "suffix" {
 
 locals {
   bucket_name = lower(
-    "tfstate-${var.project}-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${random_id.suffix.hex}"
+    "tfstate-${var.project}-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.region}-${random_id.suffix.hex}"
   )
 }
