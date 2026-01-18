@@ -15,6 +15,8 @@ module "iam" {
   dynamodb_table_arn     = module.dynamodb.table_arn
   s3_bucket_arn          = module.s3.bucket_arn
   enable_vpc_access      = false
+  enable_dynamodb_access = true
+  enable_s3_access       = true
   tags = {
     Component = "iam"
   }
@@ -65,11 +67,12 @@ module "lambda" {
   lambda_name  = "api"
   package_path = "${path.root}/build/lambda.zip"
   runtime      = "python3.12"
-  handler      = "app.handler"
+  handler      = "handler.handler"
   env_vars = {
     TABLE_NAME = module.dynamodb.table_name
     BUCKET     = module.s3.bucket_name
   }
+  role_arn           = module.iam.role_arn
   dynamodb_table_arn = module.dynamodb.table_arn
   s3_bucket_arn      = module.s3.bucket_arn
   attach_to_vpc      = false
@@ -86,8 +89,8 @@ module "http_api" {
   source               = "../../modules/http_api"
   name_prefix          = local.name_prefix
   api_name             = "backend"
-  lambda_invoke_arn    = module.lambda_app.invoke_arn
-  lambda_function_name = module.lambda_app.function_name
+  lambda_invoke_arn    = module.lambda.function_arn
+  lambda_function_name = module.lambda.function_name
   routes = {
     "GET /health"   = true
     "ANY /{proxy+}" = true
