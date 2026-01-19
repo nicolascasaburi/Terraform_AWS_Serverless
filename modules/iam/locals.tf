@@ -50,5 +50,7 @@ locals {
     ]
   )
 
-  s3_objects_arn = var.s3_bucket_arn == null ? null : "${var.s3_bucket_arn}/*"
+  s3_objects_arn       = var.s3_bucket_arn == null ? null : "${var.s3_bucket_arn}/*"
+  dynamodb_required_ok = !var.enable_dynamodb_access || var.dynamodb_table_arn != null
+  s3_required_ok       = !var.enable_s3_access || var.s3_bucket_arn != null
 }

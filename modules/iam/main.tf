@@ -63,7 +63,8 @@ resource "aws_iam_role_policy" "logs" {
 # -----------------------------
 
 data "aws_iam_policy_document" "dynamodb" {
-  count = var.dynamodb_table_arn != null ? 1 : 0
+  count = var.enable_dynamodb_access ? 1 : 0
+  #count = var.dynamodb_table_arn != null ? 1 : 0
 
   statement {
     effect    = "Allow"
@@ -73,7 +74,7 @@ data "aws_iam_policy_document" "dynamodb" {
 }
 
 resource "aws_iam_role_policy" "dynamodb" {
-  count  = var.dynamodb_table_arn != null ? 1 : 0
+  count  = var.enable_dynamodb_access ? 1 : 0
   name   = "${var.name_prefix}-${var.role_name}-policy-dynamodb"
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.dynamodb[0].json
@@ -84,7 +85,8 @@ resource "aws_iam_role_policy" "dynamodb" {
 # -----------------------------
 
 data "aws_iam_policy_document" "s3" {
-  count = var.s3_bucket_arn != null ? 1 : 0
+  count = var.enable_s3_access ? 1 : 0
+  #count = var.s3_bucket_arn != null ? 1 : 0
   # Bucket-level actions
   statement {
     effect    = "Allow"
@@ -100,7 +102,7 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_iam_role_policy" "s3" {
-  count  = var.s3_bucket_arn != null ? 1 : 0
+  count  = var.enable_s3_access ? 1 : 0
   name   = "${var.name_prefix}-${var.role_name}-policy-s3"
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.s3[0].json

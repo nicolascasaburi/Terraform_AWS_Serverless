@@ -63,3 +63,15 @@ variable "tags" {
   default     = {}
   description = "Tags to apply to IAM resources."
 }
+
+variable "enable_dynamodb_access" {
+  type        = bool
+  default     = true
+  description = "Whether to attach DynamoDB permissions to the Lambda execution role."
+}
+
+variable "enable_s3_access" {
+  type        = bool
+  default     = true
+  description = "Whether to attach S3 permissions to the Lambda execution role."
+}
