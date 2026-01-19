@@ -17,8 +17,3 @@ output "invoke_arn" {
   value       = aws_lambda_function.this.invoke_arn
   description = "Lambda invocation ARN used by services to invoke the function."
 }
-
-output "role_arn" {
-  value       = aws_iam_role.exec.arn
-  description = "ARN of the IAM execution role."
-}

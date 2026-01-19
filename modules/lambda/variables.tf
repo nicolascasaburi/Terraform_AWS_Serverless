@@ -95,3 +95,8 @@ variable "tags" {
   default     = {}
   description = "Tags to apply to IAM resources."
 }
+
+variable "role_arn" {
+  type        = string
+  description = "IAM role ARN assumed by the Lambda function (execution role)."
+}

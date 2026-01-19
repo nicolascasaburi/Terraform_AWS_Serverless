@@ -22,7 +22,7 @@ resource "aws_cloudwatch_log_group" "this" {
 resource "aws_lambda_function" "this" {
   function_name    = "${var.name_prefix}-${var.lambda_name}"
   description      = var.description
-  role             = aws_iam_role.exec.arn
+  role             = var.role_arn
   runtime          = var.runtime
   handler          = var.handler
   filename         = var.package_path
