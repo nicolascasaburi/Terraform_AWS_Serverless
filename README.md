@@ -91,41 +91,39 @@ After `apply`, Terraform prints `api_url`:
 terraform output -raw api_url
 ```
 
-Set it in a variable:
-
-```bash
-API_URL=$(terraform output -raw api_url)
-echo "$API_URL"
-```
-
 #### Health check
 
 ```bash
-curl -s "$API_URL/health" | jq .
+curl -s "$(terraform output -raw api_url)/health" | jq .
 ```
 
 #### Create an item (DynamoDB)
 
 ```bash
-curl -s -X POST "$API_URL/items" \
+curl -s -X POST "$(terraform output -raw api_url)/items" \
   -H "content-type: application/json" \
   -d '{"pk":"item#1","payload":{"color":"blue"}}' | jq .
 ```
 
 #### Get a presigned S3 upload URL
 
+Create a txt file to upload it into S3
+
 ```bash
-curl -s -X POST "$API_URL/uploads" \
+echo "Hello from an AWS-native Terraform demo uploaded via a presigned S3 URL." > test.txt
+```
+Get the presigned url
+
+```bash
+PRESIGNED_URL=$(curl -s -X POST "$(terraform output -raw api_url)/uploads" \
   -H "content-type: application/json" \
-  -d '{"key":"uploads/test.txt","content_type":"text/plain"}' | jq .
+  -d '{"key":"uploads/test.txt","content_type":"text/plain"}' | jq -er '.url')
 ```
 
-The response includes a `url`. Upload a file with:
+The response includes a `url`. Upload the file with:
 
 ```bash
-curl -X PUT "<PRESIGNED_URL>" \
-  -H "content-type: text/plain" \
-  --data-binary @README.md
+curl -X PUT "$PRESIGNED_URL" -H "content-type: text/plain" --data-binary @test.txt
 ```
 
 ---
