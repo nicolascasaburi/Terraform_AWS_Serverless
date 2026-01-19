@@ -85,12 +85,6 @@ terraform apply
 
 ### 4) Test the API
 
-After `apply`, Terraform prints `api_url`:
-
-```bash
-terraform output -raw api_url
-```
-
 #### Health check
 
 ```bash
@@ -107,12 +101,12 @@ curl -s -X POST "$(terraform output -raw api_url)/items" \
 
 #### Get a presigned S3 upload URL
 
-Create a txt file to upload it into S3
+- Create a txt file to upload it into S3
 
 ```bash
 echo "Hello from an AWS-native Terraform demo uploaded via a presigned S3 URL." > test.txt
 ```
-Get the presigned url
+- Get the presigned url
 
 ```bash
 PRESIGNED_URL=$(curl -s -X POST "$(terraform output -raw api_url)/uploads" \
@@ -120,7 +114,7 @@ PRESIGNED_URL=$(curl -s -X POST "$(terraform output -raw api_url)/uploads" \
   -d '{"key":"uploads/test.txt","content_type":"text/plain"}' | jq -er '.url')
 ```
 
-The response includes a `url`. Upload the file with:
+- The response includes a `url`. Upload the file with:
 
 ```bash
 curl -X PUT "$PRESIGNED_URL" -H "content-type: text/plain" --data-binary @test.txt
